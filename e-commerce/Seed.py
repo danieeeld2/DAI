@@ -87,44 +87,74 @@ pprint(compra.model_dump())
 compras_collection = tienda_db.compras  # Colección
 compras_collection.insert_one(compra.model_dump())
 	
-# for com in compras_collection.find():
-#	pprint(com)
-
-# Petición que queremos realizar a la BD
-query1 = {
-	'categoría' : 'Electrónica',
-	'precio': {'$gte': 100, '$lte': 200}
-}
-
-query2 = {
-	'descripción': {'$regex': 'pocket', '$options': 'i'}
-}
-
-# Se utiliza para especificar los campos a mostrar en el resultado
-projection = {
-	'_id': 0,
-    'nombre': 1,
-    'precio': 1,
-    'descripción': 1
-}
-
-# Ordena los resultados por precio ascendente
-results1 = productos_collection.find(query1, projection).sort('precio', 1)
-results2 = productos_collection.find(query2, projection)
-
-print("-------------------Consultas------------------------")
-
-print("Electrónica entre 100 y 200€, ordenados por precio:")
-# Muestra los resultados por pantalla
-for product in results1:
-    pprint(product)
-	
-print("Productos que contengan la palabra 'pocket' en la descripción")	
-for product in results2:
-	pprint(product)
-	
-...
+for com in compras_collection.find():
+	pprint(com)
 							
-# productos = getProductos('https://fakestoreapi.com/products')
-# for p in productos:
-# 	print(p)
+productos = getProductos('https://fakestoreapi.com/products')
+for p in productos:
+	print(p)
+
+# Seleccionamos la base de datos
+db = client["base_productos"]
+# Coleccion donde insertar productos
+coleccion_productos = db["productos"]
+# Insertamos los prodcutos
+coleccion_productos.insert_many(productos)
+
+
+
+print("\n\n\n------------------CONSULTAS------------------")
+print("\n\n\nElectrónica entre 100 y 200 euros, ordenados por precio:\n\n")
+
+query1 = {"category": "electronics", "price": {"$lte": 200, "$gte": 100}}
+resultado1 = coleccion_productos.find(query1).sort("price",1)
+
+for p in resultado1:
+    print(p)
+
+print("\n\n\nProductos que contengas la palabra pocket en la descripción:\n\n")
+
+#Opción i para que no tenga en cuenta mayusculas o minusculas
+query2 = {"description" : {"$regex" : "pocket", "$options" : "i"}}
+resultado2 = coleccion_productos.find(query2)
+
+for p in resultado2:
+	print(p)
+
+print("\n\n\nProductos con puntuación mayor de 4:\n\n")
+
+query3 = {"rating.rate" : {"$gte" : 4}}
+resultado3 = coleccion_productos.find(query3)
+
+for p in resultado3:
+	print(p)
+
+print("\n\n\nRompa de hombre, ordenada por puntuación:\n\n")
+
+query4 = {"category" : "men's clothing"}
+resultado4 = coleccion_productos.find(query4).sort("rating.rate", 1)
+
+for p in resultado4:
+	print(p)
+
+print("\n\n\nFacturación total:\n\n")
+
+facturacion = 0
+resultado5 = coleccion_productos.find() # Cogemos todos
+for p in resultado5:
+	precio = p.get("price",0) # Obtener el precio y si no está definido asume 0
+	facturacion += precio
+print("La facturación total es:", facturacion)
+
+print("\n\n\nFacturación por categoria de producto:\n\n")
+
+# Agrupamos por categoria y sumamos los precios
+query6 = [
+	{"$group" : {"_id" : "$category","facturacion_total" : {"$sum" : "$price"}}}
+]
+resultado6 = coleccion_productos.aggregate(query6)
+
+for r in resultado6:
+	categoria = r["_id"]
+	facturacion = r["facturacion_total"]
+	print(f"Categoría: {categoria}, Facturación: {facturacion}")
