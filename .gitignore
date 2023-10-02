@@ -1,2 +1,5 @@
 #Ignora contenido de la carpeta data, ya que esto se encarga de descargarlo el contenedor
 ./data/*
+
+#Ignora imagenes
+./imagenes/*

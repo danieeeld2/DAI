@@ -87,7 +87,18 @@ productos_collection.drop()
 
 # Insertamos todos los productos
 productos = getProductos('https://fakestoreapi.com/products')
-productos_collection.insert_many(productos)
+
+for p in productos:
+	url = p.get("image")	# Descargamos Imagen
+	directorio_destino = "imagenes/"
+	nombre_archivo = p['image'].split('/')[-1]
+	ruta_archivo_destino = directorio_destino+nombre_archivo
+	response = requests.get(url)
+	with open(ruta_archivo_destino,"wb") as archivo:
+		archivo.write(response.content)
+	p['image'] = ruta_archivo_destino
+	productos_collection.insert_one(p)
+
 				
 print(productos_collection.count_documents({}))
 
