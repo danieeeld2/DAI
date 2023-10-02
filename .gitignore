@@ -1,5 +1,7 @@
 #Ignora contenido de la carpeta data, ya que esto se encarga de descargarlo el contenedor
 ./data/*
+./data/diagnostic.data/*
+./data/journal/*
 
 #Ignora imagenes
 ./imagenes/*
