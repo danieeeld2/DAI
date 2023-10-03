@@ -5,7 +5,7 @@ from pprint import pprint
 from datetime import datetime
 from typing import Any
 import requests
-
+import re
 		
 # https://requests.readthedocs.io/en/latest/
 def getProductos(api):
@@ -97,7 +97,13 @@ for p in productos:
 	with open(ruta_archivo_destino,"wb") as archivo:
 		archivo.write(response.content)
 	p['image'] = ruta_archivo_destino
+
+	# Verifica si el campo 'title' comieza con mayuscula
+	if not re.match(r'^[A-Z]', p.get("title")):
+		p['title'] = p.get('title')[0].upper() + p.get('title')[1:]
+
 	productos_collection.insert_one(p)
+
 
 				
 print(productos_collection.count_documents({}))
