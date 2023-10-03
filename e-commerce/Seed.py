@@ -1,5 +1,5 @@
 # Seed.py
-from pydantic import BaseModel, FilePath, Field, EmailStr
+from pydantic import BaseModel, FilePath, Field, EmailStr, field_validator
 from pymongo import MongoClient
 from pprint import pprint
 from datetime import datetime
@@ -36,24 +36,31 @@ def calc_facturacion(collection):
 # con anotaciones de tipo https://docs.python.org/3/library/typing.html
 # https://docs.pydantic.dev/latest/usage/fields/
 
-class Nota(BaseModel):
-	puntuación: float = Field(ge=0., lt=5.)
-	cuenta: int = Field(ge=1)
+class Rating(BaseModel):
+	rate: float = Field(ge=0., lt=5.)
+	count: int = Field(ge=1)
 				
 class Producto(BaseModel):
 	_id: Any
-	nombre: str
-	precio: float
-	descripción: str
-	categoría: str
-	imágen: FilePath | None
-	rating: Nota
+	title: str
+	price: float
+	description: str
+	category: str
+	image: FilePath | None
+	rating: Rating
+
+	@field_validator('title')
+	@classmethod
+	def title_mayuscula(cls,v):
+		if v[0].islower():
+			raise ValueError('El título debe empezar por mayúscula')
+		return v.title()
 
 class Compra(BaseModel):
 	_id: Any
-	usuario: EmailStr
-	fecha: datetime
-	productos: list	
+	userId: int
+	date: datetime
+	products: list	
 
 
 # dato = { 
@@ -102,6 +109,8 @@ for p in productos:
 	if not re.match(r'^[A-Z]', p.get("title")):
 		p['title'] = p.get('title')[0].upper() + p.get('title')[1:]
 
+	Producto(**p)
+
 	productos_collection.insert_one(p)
 
 
@@ -137,6 +146,8 @@ compras_collection.drop()
 
 # Insertamos todos las compras
 compras = getProductos('https://fakestoreapi.com/carts')
+for c in compras:
+	Compra(**c)
 compras_collection.insert_many(compras)
 
 

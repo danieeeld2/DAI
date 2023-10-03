@@ -39,6 +39,6 @@ Primero tenemos que asegurarnos de que la carpeta compartida está configurada e
 Ejecutamos el contenedor y desde nuestro sistema host llamamos a `mongodump` para crear la copia de seguridad y guardarla en la compartida:
 
 ```bash
-mongodump --host NOMBRE_DEL_HOST --port PUERTO_MONGO --out RUTA_DE_LA_CARPETA_COMPARTIDA
+mongodump --host=NOMBRE_DEL_HOST --port=PUERTO_MONGO --db=NOMBRE_BD --out RUTA_DE_LA_CARPETA_COMPARTIDA
 ```
-En nuestro caso `host=localhost`, por lo que...
+En nuestro caso `host=localhost` y port=27017. (A mi este método no me funciona)
