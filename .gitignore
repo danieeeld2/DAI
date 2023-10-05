@@ -2,7 +2,6 @@
 ./data/*
 ./data/diagnostic.data/*
 ./data/journal/*
-./backup/*
 
 #Ignora imagenes
 ./imagenes/*
