@@ -5,31 +5,11 @@ from pprint import pprint
 from datetime import datetime
 from typing import Any
 import requests
-import re
 		
 # https://requests.readthedocs.io/en/latest/
 def getProductos(api):
 	response = requests.get(api)
 	return response.json()
-
-# Le pasas una coleccion de compras
-def calc_facturacion(collection):
-	ids_cant = []	# Almacenará pares de idintificadores y cantidades
-	for c in collection:
-		pr = c.get("products")	# Obtenemos la lista de productos comprados de cada compra
-		for p in pr:
-			ids_cant.append([p.get("productID"),p.get("quantity")])
-	
-	facturacion = 0
-	pr_coll = productos_collection.find()
-	for id in ids_cant:
-		# Para cada par se busca el producto correspondiente en la coleccion de productos usando el
-		# identificador de producto id[0] y se toma el primero que es [0]
-		# porque entendemos que el identificador es único
-		prod = pr_coll.collection.find({"id":id[0]})[0]
-		facturacion += prod.get("price")*id[1] # Cantidad comprada por precio
-
-	return round(facturacion,2)
 				
 # Esquema de la BD
 # https://docs.pydantic.dev/latest/
@@ -104,10 +84,6 @@ for p in productos:
 	with open(ruta_archivo_destino,"wb") as archivo:
 		archivo.write(response.content)
 	p['image'] = ruta_archivo_destino
-
-	# Verifica si el campo 'title' comieza con mayuscula
-	if not re.match(r'^[A-Z]', p.get("title")):
-		p['title'] = p.get('title')[0].upper() + p.get('title')[1:]
 
 	Producto(**p)
 
