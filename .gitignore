@@ -2,6 +2,11 @@
 ./data/*
 ./data/diagnostic.data/*
 ./data/journal/*
+data/*
+./data
+./backup/*
+./backup
+baclup/
 
 #Ignora imagenes
 ./imagenes/*
