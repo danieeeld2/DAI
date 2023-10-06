@@ -3,6 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 
+from . import models
 
 def index(request):
     html = """
@@ -22,15 +23,16 @@ def index(request):
     </html>
     """
     return HttpResponse(html)
+
 def C1(request):
-    return HttpResponse()
+    return HttpResponse(models.consulta1())
 def C2(request):
-    return HttpResponse()
+    return HttpResponse(models.consulta2())
 def C3(request):
-    return HttpResponse()
+    return HttpResponse(models.consulta3())
 def C4(request):
-    return HttpResponse()
+    return HttpResponse(models.consulta4())
 def C5(request):
-    return HttpResponse()
+    return HttpResponse(models.consulta5())
 def C6(request):
-    return HttpResponse()
+    return HttpResponse(models.consulta6())
