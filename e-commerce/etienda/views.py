@@ -11,12 +11,13 @@ def index(request):
     <body>
         <h1>Consultas a la BD</h1>
         <ul>
-            <li><a href="C1">C1</a></li>
-            <li><a href="C2">C2</a></li>
-            <li><a href="C3">C3</a></li>
-            <li><a href="C4">C4</a></li>
-            <li><a href="C5">C5</a></li>
-            <li><a href="C6">C6</a></li>
+            <li><a href="C1">Electrónica entre 100 y 200 euros, ordenados por precio</a></li>
+            <li><a href="C2">Productos que contengas la palabra pocket en la descripción</a></li>
+            <li><a href="C3">Productos con puntuación mayor de 4</a></li>
+            <li><a href="C4">Rompa de hombre, ordenada por puntuación</a></li>
+            <li><a href="C5">Facturación total</a></li>
+            <li><a href="C6">Facturación por categoria de producto</a></li>
+        </ul>
     </body>
     </html>
     """
