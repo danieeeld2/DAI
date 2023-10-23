@@ -11,6 +11,24 @@ tienda_db = client.tienda                   # Base de Datos
 productos_collection = tienda_db.productos  # Colección  
 compras_collection = tienda_db.compras  # Colección
 
+def ObtenerProductos():
+    resultado = productos_collection.find()
+    return resultado
+
+def ObtenerProductosConcretos(query):
+    resultado = productos_collection.find({"$or": [{"title": {"$regex": query, "$options": "i"}}, {"description": {"$regex": query, "$options": "i"}}]})
+    return resultado
+
+def ObtenerCategorias():
+    categorias = []
+    for record in productos_collection.find():
+        cat=record.get("category")
+        if cat not in categorias:
+            categorias.append(cat)
+    return categorias
+
+#######################################################################################
+
 def consulta1():
     query1 = {"category": "electronics", "price": {"$lte": 200, "$gte": 100}}
     resultado1 = productos_collection.find(query1).sort("price",1)
@@ -70,4 +88,5 @@ def consulta6():
         resultado.append([cat,facturacion])
     resultado_final = " ".join([str(x) for x in resultado])
     return resultado_final
-        
+ 
+
