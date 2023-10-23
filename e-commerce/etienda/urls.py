@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
     path("", views.index, name="index"),
     path("buscar", views.busqueda, name="busqueda"),
+    path("buscar-categoria/<str:categoria>/", views.categoria, name="categoria"),
 ]
 
 if settings.DEBUG:

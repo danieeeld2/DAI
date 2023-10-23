@@ -14,3 +14,7 @@ def index(request):
 def busqueda(request):
     context = {'search_query' : request.GET.get('input_busqueda', ''), 'productos' : models.ObtenerProductosConcretos(request.GET.get('input_busqueda', '')), 'categorias' : models.ObtenerCategorias()}
     return render(request, 'etienda/busqueda.html', context)
+
+def categoria(request, categoria):
+    context = {'productos' : models.ObtenerProductosCategoria(categoria), 'categorias' : models.ObtenerCategorias(), 'categoria' : categoria}
+    return render(request, 'etienda/categoria.html', context)

@@ -19,6 +19,10 @@ def ObtenerProductosConcretos(query):
     resultado = productos_collection.find({"$or": [{"title": {"$regex": query, "$options": "i"}}, {"description": {"$regex": query, "$options": "i"}}]})
     return resultado
 
+def ObtenerProductosCategoria(categoria):
+    resultado = productos_collection.find({"category": categoria})
+    return resultado
+
 def ObtenerCategorias():
     categorias = []
     for record in productos_collection.find():
