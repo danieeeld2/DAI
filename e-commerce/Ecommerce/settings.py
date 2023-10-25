@@ -17,8 +17,6 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Configuración carpeta de medios
-MEDIA_ROOT = os.path.join(BASE_DIR, 'imagenes')
-MEDIA_URL = '/imagenes/'
 
 
 # Quick-start development settings - unsuitable for production
