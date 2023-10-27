@@ -6,6 +6,7 @@ from django.conf import settings
 from django.http import HttpResponse
 
 from . import models
+from . import forms
 
 def index(request):
     context = {'productos' : models.ObtenerProductos(), 'categorias' : models.ObtenerCategorias()}
@@ -18,3 +19,7 @@ def busqueda(request):
 def categoria(request, categoria):
     context = {'productos' : models.ObtenerProductosCategoria(categoria), 'categorias' : models.ObtenerCategorias(), 'categoria' : categoria}
     return render(request, 'etienda/categoria.html', context)
+
+def añadir(request):
+    context = {'form' : forms.ProductoForm()}
+    return render(request, 'etienda/add.html', context)
