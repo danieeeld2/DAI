@@ -77,13 +77,17 @@ productos = getProductos('https://fakestoreapi.com/products')
 
 for p in productos:
 	url = p.get("image")	# Descargamos Imagen
-	directorio_destino = "imagenes/"
+	directorio_destino = "static/imagenes/"
+	directorio_imagenes = "imagenes/"
 	nombre_archivo = p['image'].split('/')[-1]
+	nombre_archivo_destino = directorio_imagenes+nombre_archivo
 	ruta_archivo_destino = directorio_destino+nombre_archivo
 	response = requests.get(url)
 	with open(ruta_archivo_destino,"wb") as archivo:
 		archivo.write(response.content)
-	p['image'] = ruta_archivo_destino
+	with open(nombre_archivo_destino,"wb") as archivo:
+		archivo.write(response.content)
+	p['image'] = nombre_archivo_destino
 
 	Producto(**p)
 
