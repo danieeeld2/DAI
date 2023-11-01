@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_bootstrap5',
+    'django_telegram_logging',
 ]
 
 MIDDLEWARE = [
@@ -132,6 +133,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Loggers
 
 LOG_FILE = 'Server.log'
+TELEGRAM_LOGGING_TOKEN = '6844000762:AAH4c5uEKTJPn6p0kUgwARPliLNIvtaghxQ'
+TELEGRAM_LOGGING_CHAT = -4093073697
+TELEGRAM_LOGGING_EMIT_ON_DEBUG = True
+
 
 LOGGING = {
 	'version': 1,
@@ -163,19 +168,25 @@ LOGGING = {
 			'level': 'DEBUG',
 			'class': 'logging.StreamHandler',
 			'formatter': 'simple'
-		}
+		},
+
+        'telegram': {
+            'level': 'ERROR',
+            'class': 'django_telegram_logging.handler.TelegramHandler',
+        },
 	},
 								
 	'loggers': {     # interno de django
 		'django': {
-			'handlers': ['file'],
+			'handlers': ['file', 'telegram'],
 			'propagate': True,   
 			'level': 'ERROR',
 		},
 
 		'': {  
-				'handlers': ['file', 'console'],
+				'handlers': ['file', 'console', 'telegram'],
 				'level': 'DEBUG',
 			}
-		}
+		},
 	}
+
