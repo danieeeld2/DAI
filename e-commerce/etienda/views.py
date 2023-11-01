@@ -21,5 +21,5 @@ def categoria(request, categoria):
     return render(request, 'etienda/categoria.html', context)
 
 def añadir(request):
-    context = {'form' : forms.ProductoForm()}
+    context = {'form' : forms.ProductoForm(), 'categorias' : models.ObtenerCategorias()}
     return render(request, 'etienda/add.html', context)
