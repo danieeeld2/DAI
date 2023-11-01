@@ -1,7 +1,23 @@
 from django.db import models
 from pymongo import MongoClient
+from pydantic import BaseModel, FilePath, field_validator
+from typing import Any
 
 # Create your models here.
+class Producto(BaseModel):
+	_id: Any
+	title: str
+	price: float
+	description: str
+	category: str
+	image: FilePath | None
+
+	@field_validator('title')
+	@classmethod
+	def title_mayuscula(cls,v):
+		if v[0].islower():
+			raise ValueError('El título debe empezar por mayúscula')
+		return v.title()
 
 # Conexión con la BD				
 # https://pymongo.readthedocs.io/en/stable/tutorial.html
@@ -30,6 +46,9 @@ def ObtenerCategorias():
         if cat not in categorias:
             categorias.append(cat)
     return categorias
+
+def AñadirProducto(producto):
+    productos_collection.insert_one(producto)
 
 #######################################################################################
 

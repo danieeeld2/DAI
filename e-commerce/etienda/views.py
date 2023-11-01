@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.views.static import serve
 from django.conf import settings
+import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 from django.http import HttpResponse
@@ -21,5 +25,39 @@ def categoria(request, categoria):
     return render(request, 'etienda/categoria.html', context)
 
 def añadir(request):
+    if request.method == 'POST':
+        form = forms.ProductoForm(request.POST, request.FILES)
+        if form.is_valid():
+            producto = {
+                'title' : form.cleaned_data['title'],
+                'category' : form.cleaned_data['category'],
+                'description' : form.cleaned_data['description'],
+                'price' : form.cleaned_data['price'],
+                'image' : form.cleaned_data['image']
+            }
+
+            # Copiar el archivo a static/imagenes e imagenes/
+            image_path = form.cleaned_data['image'].name
+            destination1 = os.path.join('imagenes', image_path)
+            with open(destination1, 'wb') as destination_file:
+                for chunk in form.cleaned_data['image'].chunks():
+                    destination_file.write(chunk)
+            destination2 = os.path.join('static/imagenes', image_path)
+            with open(destination2, 'wb') as destination_file:
+                for chunk in form.cleaned_data['image'].chunks():
+                    destination_file.write(chunk)
+
+            logger.info('Imagen copiada a %s', destination1)
+            producto['image'] = destination1
+            logger.info('Añadiendo producto %s', producto)
+
+            models.AñadirProducto(producto)
+            return render(request, 'etienda/index.html', {'productos' : models.ObtenerProductos(), 'categorias' : models.ObtenerCategorias()})
+        
+        else:
+            form = forms.ProductoForm()
+            return render(request, 'etienda/add.html', {'form': form, 'categorias' : models.ObtenerCategorias()})
+        
+    # Predeterminado   
     context = {'form' : forms.ProductoForm(), 'categorias' : models.ObtenerCategorias()}
     return render(request, 'etienda/add.html', context)
