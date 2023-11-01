@@ -8,6 +8,7 @@ logger = logging.getLogger(__name__)
 
 # Create your views here.
 from django.http import HttpResponse
+from django.contrib import messages 
 
 from . import models
 from . import forms
@@ -52,10 +53,15 @@ def añadir(request):
             logger.info('Añadiendo producto %s', producto)
 
             models.AñadirProducto(producto)
-            return render(request, 'etienda/index.html', {'productos' : models.ObtenerProductos(), 'categorias' : models.ObtenerCategorias()})
+            logger.info('Añadido producto %s', producto)
+            messages.success(request, 'Product added successfully.')
+
+            return render(request, 'etienda/add.html', {'form': forms.ProductoForm(), 'categorias' : models.ObtenerCategorias()})
         
         else:
             form = forms.ProductoForm()
+            logger.error('Error añadiendo producto')
+            messages.warning(request, 'Something went wrong. Please try again.')
             return render(request, 'etienda/add.html', {'form': form, 'categorias' : models.ObtenerCategorias()})
         
     # Predeterminado   

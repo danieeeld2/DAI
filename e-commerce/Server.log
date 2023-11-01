@@ -1,0 +1,4 @@
+[01/Nov/2023 18:01:42] ERROR [etienda.forms:10] El título de un producto a insertar debe empezar por mayúscula
+[01/Nov/2023 18:01:42] ERROR [etienda.views:63] Error añadiendo producto
+[01/Nov/2023 18:02:09] ERROR [etienda.forms:10] El título de un producto a insertar debe empezar por mayúscula
+[01/Nov/2023 18:02:09] ERROR [etienda.views:63] Error añadiendo producto
