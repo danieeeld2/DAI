@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 def title_in_mayus_validator(value):
     if value[0].islower():
-        logger.info('El título de un producto a insertar debe empezar por mayúscula')
+        logger.error('El título de un producto a insertar debe empezar por mayúscula')
         raise ValidationError(
             _("%(value)s debe empezar con mayúscula"),
             params={"value": value},

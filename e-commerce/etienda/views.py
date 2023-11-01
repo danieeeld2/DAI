@@ -47,8 +47,7 @@ def añadir(request):
             with open(destination2, 'wb') as destination_file:
                 for chunk in form.cleaned_data['image'].chunks():
                     destination_file.write(chunk)
-
-            logger.info('Imagen copiada a %s', destination1)
+                    
             producto['image'] = destination1
             logger.info('Añadiendo producto %s', producto)
 
