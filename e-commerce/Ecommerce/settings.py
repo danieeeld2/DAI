@@ -133,9 +133,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Loggers
 
 LOG_FILE = 'Server.log'
-TELEGRAM_LOGGING_TOKEN = '6844000762:AAH4c5uEKTJPn6p0kUgwARPliLNIvtaghxQ'
-TELEGRAM_LOGGING_CHAT = -4093073697
-TELEGRAM_LOGGING_EMIT_ON_DEBUG = True
+# TELEGRAM_LOGGING_TOKEN = '6844000762:AAH4c5uEKTJPn6p0kUgwARPliLNIvtaghxQ'
+# TELEGRAM_LOGGING_CHAT = -4093073697
+# TELEGRAM_LOGGING_EMIT_ON_DEBUG = True
 
 
 LOGGING = {
@@ -170,21 +170,23 @@ LOGGING = {
 			'formatter': 'simple'
 		},
 
-        'telegram': {
-            'level': 'ERROR',
-            'class': 'django_telegram_logging.handler.TelegramHandler',
-        },
+        # 'telegram': {
+        #     'level': 'ERROR',
+        #     'class': 'django_telegram_logging.handler.TelegramHandler',
+        # },
 	},
 								
 	'loggers': {     # interno de django
 		'django': {
-			'handlers': ['file', 'telegram'],
+			# 'handlers': ['file', 'telegram'],
+            'handlers': ['file'],
 			'propagate': True,   
 			'level': 'ERROR',
 		},
 
 		'': {  
-				'handlers': ['file', 'console', 'telegram'],
+				# 'handlers': ['file', 'console', 'telegram'],
+                'handlers': ['file', 'console'],
 				'level': 'DEBUG',
 			}
 		},

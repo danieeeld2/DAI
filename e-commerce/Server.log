@@ -1,2 +1,4 @@
-[02/Nov/2023 07:47:40] ERROR [etienda.forms:10] El título de un producto a insertar debe empezar por mayúscula
-[02/Nov/2023 07:47:41] ERROR [etienda.views:62] Error añadiendo producto
+[02/Nov/2023 09:45:34] ERROR [etienda.forms:10] El título de un producto a insertar debe empezar por mayúscula
+[02/Nov/2023 09:45:34] ERROR [etienda.views:62] Error añadiendo producto
+[02/Nov/2023 09:45:52] INFO [etienda.views:52] Añadiendo producto {'title': 'Doraemon', 'category': 'toys2', 'description': 'toy', 'price': 12.1, 'image': 'imagenes/peluche-velboa-40-cm-doraemon-dorayaki.jpg'}
+[02/Nov/2023 09:45:52] INFO [etienda.views:55] Añadido producto {'title': 'Doraemon', 'category': 'toys2', 'description': 'toy', 'price': 12.1, 'image': 'imagenes/peluche-velboa-40-cm-doraemon-dorayaki.jpg', '_id': ObjectId('65436fd090a33e905949c307')}
