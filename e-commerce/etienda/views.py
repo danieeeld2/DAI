@@ -58,7 +58,7 @@ def añadir(request):
             return render(request, 'etienda/add.html', {'form': forms.ProductoForm(), 'categorias' : models.ObtenerCategorias()})
         
         else:
-            form = forms.ProductoForm()
+            form.add_error('title', 'Title must begin with a capital letter')
             logger.error('Error añadiendo producto')
             messages.warning(request, 'Something went wrong. Please try again.')
             return render(request, 'etienda/add.html', {'form': form, 'categorias' : models.ObtenerCategorias()})

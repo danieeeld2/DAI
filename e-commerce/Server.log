@@ -1,4 +1,2 @@
-[01/Nov/2023 19:43:03] ERROR [etienda.forms:10] El título de un producto a insertar debe empezar por mayúscula
-[01/Nov/2023 19:43:03] ERROR [etienda.views:62] Error añadiendo producto
-[01/Nov/2023 19:43:33] INFO [etienda.views:52] Añadiendo producto {'title': 'Doraemon prueba con biggies', 'category': 'marioto', 'description': 'pa mario', 'price': 11.23, 'image': 'imagenes/peluche-velboa-40-cm-doraemon-dorayaki.jpg'}
-[01/Nov/2023 19:43:33] INFO [etienda.views:55] Añadido producto {'title': 'Doraemon prueba con biggies', 'category': 'marioto', 'description': 'pa mario', 'price': 11.23, 'image': 'imagenes/peluche-velboa-40-cm-doraemon-dorayaki.jpg', '_id': ObjectId('6542aa65a6bee244337c0df8')}
+[02/Nov/2023 07:47:40] ERROR [etienda.forms:10] El título de un producto a insertar debe empezar por mayúscula
+[02/Nov/2023 07:47:41] ERROR [etienda.views:62] Error añadiendo producto
