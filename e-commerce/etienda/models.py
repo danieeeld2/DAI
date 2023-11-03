@@ -48,7 +48,12 @@ def ObtenerCategorias():
     return categorias
 
 def AñadirProducto(producto):
-    productos_collection.insert_one(producto)
+    try:
+        productos_collection.insert_one(producto)
+    except Exception as e:
+        print(e)
+        print("Error al añadir el producto")
+        return False
 
 #######################################################################################
 
