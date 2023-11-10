@@ -2,3 +2,7 @@
 *.tar
 *.json
 *.jpg
+data/
+*.pyc
+*.sqlite3
+*.log
