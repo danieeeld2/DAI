@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 # Create your views here.
 from django.http import HttpResponse
 from django.contrib import messages 
+from django.contrib.auth.decorators import login_required
 
 from . import models
 from . import forms
@@ -25,6 +26,7 @@ def categoria(request, categoria):
     context = {'productos' : models.ObtenerProductosCategoria(categoria), 'categorias' : models.ObtenerCategorias(), 'categoria' : categoria}
     return render(request, 'etienda/categoria.html', context)
 
+@login_required
 def añadir(request):
     if request.method == 'POST':
         form = forms.ProductoForm(request.POST, request.FILES)

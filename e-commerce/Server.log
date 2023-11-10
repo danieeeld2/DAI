@@ -1,2 +1,0 @@
-[03/Nov/2023 08:38:58] INFO [etienda.views:52] Añadiendo producto {'title': 'Doraemon', 'category': 'toys', 'description': 'toy', 'price': 12.0, 'image': 'imagenes/peluche-velboa-40-cm-doraemon-dorayaki.jpg'}
-[03/Nov/2023 08:38:58] INFO [etienda.views:55] Añadido producto {'title': 'Doraemon', 'category': 'toys', 'description': 'toy', 'price': 12.0, 'image': 'imagenes/peluche-velboa-40-cm-doraemon-dorayaki.jpg', '_id': ObjectId('6544b1a2db831cd0dc4c4ee7')}
