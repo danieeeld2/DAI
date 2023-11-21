@@ -1,18 +1,22 @@
 from django.db import models
 from pymongo import MongoClient
-from pydantic import BaseModel, FilePath, field_validator
+from pydantic import BaseModel, FilePath #field_validator
 from typing import Any
+from bson.objectid import ObjectId
+from bson.json_util import dumps
+
+# Quitamos el field_validator porque no funciona con el ninja
 
 # Create your models here.
 class Producto(BaseModel):
-	_id: Any
+	id: Any
 	title: str
 	price: float
 	description: str
 	category: str
 	image: FilePath | None
 
-	@field_validator('title')
+	# @field_validator('title')
 	@classmethod
 	def title_mayuscula(cls,v):
 		if v[0].islower():
@@ -29,6 +33,18 @@ compras_collection = tienda_db.compras  # Colección
 
 def ObtenerProductos():
     resultado = productos_collection.find()
+    resultado = list(resultado)
+    for r in resultado:
+        r["id"] = str(r.get("_id"))
+        del r["_id"]
+    return resultado
+
+def ObtenerProductosId(id):
+    resultado = productos_collection.find({"_id": ObjectId(id)})
+    resultado = list(resultado)
+    for r in resultado:
+        r["id"] = str(r.get("_id"))
+        del r["_id"]
     return resultado
 
 def ObtenerProductosConcretos(query):
@@ -81,40 +97,40 @@ def consulta4():
     resultado = " ".join([str(x) for x in resultado4])
     return resultado
 
-def consulta5():
-    ids_cant = []
-    for c in compras_collection.find():
-        pr = c.get("products")
-        for p in pr:
-            ids_cant.append([p.get("productId"),p.get("quantity")])
-    facturacion = 0
-    pr_coll = productos_collection.find()
-    for id in ids_cant:
-        prod = pr_coll.collection.find({"id":id[0]})[0]
-        facturacion += prod.get("price")*id[1]
-    return str(facturacion)
+# def consulta5():
+#     ids_cant = []
+#     for c in compras_collection.find():
+#         pr = c.get("products")
+#         for p in pr:
+#             ids_cant.append([p.get("productId"),p.get("quantity")])
+#     facturacion = 0
+#     pr_coll = productos_collection.find()
+#     for id in ids_cant:
+#         prod = pr_coll.collection.find({"id":id[0]})[0]
+#         facturacion += prod.get("price")*id[1]
+#     return str(facturacion)
 
-def consulta6():
-    categories = []
-    ids_cant = []
-    resultado = []
-    for c in compras_collection.find():
-        pr = c.get("products")
-        for p in pr:
-            ids_cant.append([p.get("productId"),p.get("quantity")])
-    for record in productos_collection.find():
-        cat=record.get("category")
-        if cat not in categories:
-            categories.append(cat)
-    for cat in categories:
-        facturacion = 0
-        coll = productos_collection.find({"category":cat})
-        for p in coll:
-            for id in ids_cant:
-                if p.get("id") == id[0]:
-                    facturacion += p.get("price")*id[1]
-        resultado.append([cat,facturacion])
-    resultado_final = " ".join([str(x) for x in resultado])
-    return resultado_final
+# def consulta6():
+#     categories = []
+#     ids_cant = []
+#     resultado = []
+#     for c in compras_collection.find():
+#         pr = c.get("products")
+#         for p in pr:
+#             ids_cant.append([p.get("productId"),p.get("quantity")])
+#     for record in productos_collection.find():
+#         cat=record.get("category")
+#         if cat not in categories:
+#             categories.append(cat)
+#     for cat in categories:
+#         facturacion = 0
+#         coll = productos_collection.find({"category":cat})
+#         for p in coll:
+#             for id in ids_cant:
+#                 if p.get("id") == id[0]:
+#                     facturacion += p.get("price")*id[1]
+#         resultado.append([cat,facturacion])
+#     resultado_final = " ".join([str(x) for x in resultado])
+#     return resultado_final
  
 

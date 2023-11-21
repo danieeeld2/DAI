@@ -4,6 +4,8 @@ from django.conf.urls.static import static
 
 from . import views
 
+from .api import api
+
 urlpatterns = [
     path("", views.index, name="index"),
     path("buscar", views.busqueda, name="busqueda"),

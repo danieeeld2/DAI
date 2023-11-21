@@ -1,5 +1,5 @@
 # Seed.py
-from pydantic import BaseModel, FilePath, Field, EmailStr, field_validator
+from pydantic import BaseModel, FilePath, Field, EmailStr # field_validator
 from pymongo import MongoClient
 from pprint import pprint
 from datetime import datetime
@@ -21,7 +21,7 @@ class Rating(BaseModel):
 	count: int = Field(ge=1)
 				
 class Producto(BaseModel):
-	_id: Any
+	#_id: Any
 	title: str
 	price: float
 	description: str
@@ -29,7 +29,9 @@ class Producto(BaseModel):
 	image: FilePath | None
 	rating: Rating
 
-	@field_validator('title')
+	# Quitamos el field_validator ya que no funciona con el ninja
+
+	# @field_validator('title')
 	@classmethod
 	def title_mayuscula(cls,v):
 		if v[0].islower():
@@ -37,7 +39,7 @@ class Producto(BaseModel):
 		return v.title()
 
 class Compra(BaseModel):
-	_id: Any
+	#_id: Any
 	userId: int
 	date: datetime
 	products: list	
@@ -88,6 +90,7 @@ for p in productos:
 	with open(nombre_archivo_destino,"wb") as archivo:
 		archivo.write(response.content)
 	p['image'] = nombre_archivo_destino
+	p.pop('id')
 
 	Producto(**p)
 
@@ -182,37 +185,37 @@ resultado4 = productos_collection.find(query4).sort("rating.rate", 1)
 for p in resultado4:
 	pprint(p)
 
-print("\n\n\nFacturación total:\n\n")
+# print("\n\n\nFacturación total:\n\n")
 
-ids_cant = []
-for c in compras_collection.find():
-	pr = c.get("products")
-	for p in pr:
-		ids_cant.append([p.get("productId"),p.get("quantity")])
-facturacion = 0
-pr_coll = productos_collection.find()
-for id in ids_cant:
-	prod = pr_coll.collection.find({"id":id[0]})[0]
-	facturacion += prod.get("price")*id[1]
+# ids_cant = []
+# for c in compras_collection.find():
+# 	pr = c.get("products")
+# 	for p in pr:
+# 		ids_cant.append([p.get("productId"),p.get("quantity")])
+# facturacion = 0
+# pr_coll = productos_collection.find()
+# for id in ids_cant:
+# 	prod = pr_coll.collection.find({"id":id[0]})[0]
+# 	facturacion += prod.get("price")*id[1]
 
-print(str(round(facturacion,2))+"€")
+# print(str(round(facturacion,2))+"€")
 
-print("\n\n\nFacturación por categoria de producto:\n\n")
+# print("\n\n\nFacturación por categoria de producto:\n\n")
 
-categories = []
-# Hacemos una lista de las categorias
-for record in productos_collection.find():
-	cat=record.get("category")
-	if cat not in categories:
-		categories.append(cat)
-for cat in categories:
-	print('\n  ' + cat)
-	facturacion = 0
-	coll = productos_collection.find({"category":cat})
-	for p in coll:
-		for id in ids_cant:
-			# Vemos si coincide el id
-			if p.get("id") == id[0]:
-				facturacion += p.get("price")*id[1]
+# categories = []
+# # Hacemos una lista de las categorias
+# for record in productos_collection.find():
+# 	cat=record.get("category")
+# 	if cat not in categories:
+# 		categories.append(cat)
+# for cat in categories:
+# 	print('\n  ' + cat)
+# 	facturacion = 0
+# 	coll = productos_collection.find({"category":cat})
+# 	for p in coll:
+# 		for id in ids_cant:
+# 			# Vemos si coincide el id
+# 			if p.get("id") == id[0]:
+# 				facturacion += p.get("price")*id[1]
 
-	print(str(round(facturacion,2))+"€")
+# 	print(str(round(facturacion,2))+"€")
