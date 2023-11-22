@@ -4,6 +4,9 @@ from pydantic import BaseModel, FilePath #field_validator
 from typing import Any
 from bson.objectid import ObjectId
 from bson.json_util import dumps
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Quitamos el field_validator porque no funciona con el ninja
 
@@ -54,6 +57,45 @@ def ObtenerProductosConcretos(query):
 def ObtenerProductosCategoria(categoria):
     resultado = productos_collection.find({"category": categoria})
     return resultado
+
+def EliminarProducto(id):
+    try:
+        resul = productos_collection.find({"_id": ObjectId(id)})
+        resultado = {}
+        for attr, val in resul[0].items():
+            if attr == "_id":
+                resultado["id"] = str(val)
+            else:
+                resultado[attr] = val
+        logger.debug(f'{resultado}')
+        productos_collection.delete_one({"_id": ObjectId(id)})
+        return resultado
+    except Exception as e:
+        logger.error(e)
+        logger.error("Error al eliminar el producto")        
+        return False
+
+def ModificarProducto(id, atributo, valor):
+    try:
+        productos_collection.update_one({"_id": ObjectId(id)}, {"$set": {atributo: valor}})
+    except Exception as e:
+        logger.error(e)
+        logger.error("Error al modificar el producto")        
+        return False
+    
+def CrearProducto(producto):
+    try:
+        insertado = productos_collection.insert_one(producto.dict())
+        resultado = productos_collection.find({"_id": insertado.inserted_id})
+        resultado = list(resultado)
+        for r in resultado:
+            r["id"] = str(r.get("_id"))
+            del r["_id"]
+        return resultado
+    except Exception as e:
+        logger.error(e)
+        logger.error("Error al crear el producto")        
+        return False
 
 def ObtenerCategorias():
     categorias = []
