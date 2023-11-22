@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_bootstrap5',
     'django_telegram_logging',
+    'etienda',
+    'ninja_extra',
 ]
 
 MIDDLEWARE = [
