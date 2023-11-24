@@ -48,7 +48,7 @@ def Productos(request, since: int = Query(default=0), to: int = Query(default=4)
 	return 202, list(resultados)
 
 @api.put("/productos/{id}", response = {202: ProductSchema, 404: ErrorSchema})
-def Modifica_producto(request, id: str, payload: ProductSchemaIn):
+def Modifica_producto(request, id: str, payload: ProductSchemaIn = Form(...)):
 	try:
 		for attr, value in payload.dict().items():
 			logger.debug(f'{attr} -> {value}')
@@ -78,7 +78,7 @@ def EliminarProducto(request, id : str):
 		return 404, {"message": "No se ha encontrado el producto"}
 
 @api.post('/products', response={201 : List[ProductSchema], 400 : ErrorSchema})
-def CrearProducto(request, payload: ProductSchemaIn):
+def CrearProducto(request, payload : ProductSchemaIn=Form(...)):
 	try:
 		resultado = models.CrearProducto(payload)
 		return 201, list(resultado)
