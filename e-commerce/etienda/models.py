@@ -83,9 +83,23 @@ def ModificarProducto(id, atributo, valor):
         logger.error("Error al modificar el producto")        
         return False
     
-def CrearProducto(producto):
+def handle_uploaded_file(f):
+    directorio_destino = "static/imagenes/" 
+    directorio_imagenes = "imagenes/"
+    nombre_archivo = f.name.split('/')[-1]
+    nombre_archivo_destino = directorio_imagenes+nombre_archivo
+    ruta_archivo_destino = directorio_destino+nombre_archivo
+    with open(ruta_archivo_destino,"wb") as archivo:
+        archivo.write(f.read())
+    with open(nombre_archivo_destino,"wb") as archivo:
+        archivo.write(f.read())
+    return nombre_archivo_destino
+    
+def CrearProducto(title, price, description, category, image):
     try:
-        insertado = productos_collection.insert_one(producto.dict())
+        image = handle_uploaded_file(image)
+        producto = {"title": title, "price": price, "description": description, "category": category, "image": image, "rating": {"count": 0, "rate": 0}}
+        insertado = productos_collection.insert_one(producto)
         resultado = productos_collection.find({"_id": insertado.inserted_id})
         resultado = list(resultado)
         for r in resultado:

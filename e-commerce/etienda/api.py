@@ -1,5 +1,6 @@
 from ninja_extra import NinjaExtraAPI, api_controller, http_get
-from ninja import Schema, Query, Form
+from ninja import Schema, Query, Form, File
+from ninja.files import UploadedFile
 from .import models
 from bson.json_util import dumps
 from bson.objectid import ObjectId
@@ -78,9 +79,9 @@ def EliminarProducto(request, id : str):
 		return 404, {"message": "No se ha encontrado el producto"}
 
 @api.post('/products', response={201 : List[ProductSchema], 400 : ErrorSchema})
-def CrearProducto(request, payload : ProductSchemaIn=Form(...)):
+def CrearProducto(request, title: str = Form(...), price: float = Form(...), description: str = Form(...), category: str = Form(...), image: UploadedFile = File(...)):
 	try:
-		resultado = models.CrearProducto(payload)
+		resultado = models.CrearProducto(title, price, description, category, image)
 		return 201, list(resultado)
 	except Exception as e:
 		logger.error(e)
