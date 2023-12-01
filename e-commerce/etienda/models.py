@@ -78,6 +78,7 @@ def EliminarProducto(id):
 def ModificarProducto(id, atributo, valor):
     try:
         productos_collection.update_one({"_id": ObjectId(id)}, {"$set": {atributo: valor}})
+        return True
     except Exception as e:
         logger.error(e)
         logger.error("Error al modificar el producto")        

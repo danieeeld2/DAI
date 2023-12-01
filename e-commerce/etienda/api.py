@@ -48,15 +48,15 @@ def Productos(request, since: int = Query(default=0), to: int = Query(default=4)
 	resultados = models.ObtenerProductos()[since:to]
 	return 202, list(resultados)
 
-@api.put("/productos/{id}", response = {202: ProductSchema, 404: ErrorSchema})
-def Modifica_producto(request, id: str, payload: ProductSchemaIn = Form(...)):
+@api.put("/productos/{id}", response = {202: List[ProductSchema], 404: ErrorSchema})
+def Modifica_producto(request, id: str, payload: ProductSchemaIn):
 	try:
 		for attr, value in payload.dict().items():
 			logger.debug(f'{attr} -> {value}')
 			models.ModificarProducto(id, attr, value)
-		payload["id"] = id
+		resultado = models.ObtenerProductosId(id)
 		logger.debug(f'{payload}')
-		return 202, payload
+		return 202, list(resultado)
 	except:
 		return 404, {'message': 'no encontrado'}
 
