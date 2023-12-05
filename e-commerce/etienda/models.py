@@ -1,6 +1,6 @@
 from django.db import models
 from pymongo import MongoClient
-from pydantic import BaseModel, FilePath #field_validator
+from pydantic import BaseModel, Field, FilePath #field_validator
 from typing import Any
 from bson.objectid import ObjectId
 from bson.json_util import dumps
@@ -11,6 +11,9 @@ logger = logging.getLogger(__name__)
 # Quitamos el field_validator porque no funciona con el ninja
 
 # Create your models here.
+class Rating(BaseModel):
+	rate: float = Field(ge=0., lt=5.)
+	count: int = Field(ge=1)
 class Producto(BaseModel):
 	id: Any
 	title: str
@@ -126,6 +129,20 @@ def AñadirProducto(producto):
     except Exception as e:
         print(e)
         print("Error al añadir el producto")
+        return False
+
+def ModificarRating(id, rate):
+    try:
+        product = productos_collection.find_one({"_id": ObjectId(id)})
+        if product:
+            new_rating = Rating(**product["rating"])
+            new_count = new_rating.count + 1
+            new_rate = ((new_rating.rate * new_rating.count) + (rate * 1.0)) / new_count
+            productos_collection.update_one({"_id": ObjectId(id)}, {"$set": {"rating": {"count": new_count, "rate": new_rate}}})
+            return ObtenerProductosId(id)
+    except Exception as e:
+        logger.error(e)
+        logger.error("Error al modificar el rating")        
         return False
 
 #######################################################################################

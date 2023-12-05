@@ -11,12 +11,14 @@ from ninja.security import HttpBearer
 
 logger = logging.getLogger(__name__)
 
-class GlobalAuth(HttpBearer):
-    def authenticate(self, request, token):
-        if token == "DAI2023":
-            return token
+# class GlobalAuth(HttpBearer):
+#     def authenticate(self, request, token):
+#         if token == "DAI2023":
+#             return token
 
-api = NinjaExtraAPI(auth=GlobalAuth())
+# api = NinjaExtraAPI(auth=GlobalAuth())
+
+api = NinjaExtraAPI()
 
 class Rate(Schema):
 	rate: float
@@ -87,7 +89,16 @@ def CrearProducto(request, title: str = Form(...), price: float = Form(...), des
 		logger.error(e)
 		return 400, {"message": "No se ha podido crear el producto"}
 	
-@api.post("/token", auth=None) 
-def get_token(request, username: str = Form(...), password: str = Form(...)):
-    if username == "admin" and password == "DAI2324":
-        return {"token": "DAI2023"}
+@api.put('/products/{id}/{rating}', response={202 : List[ProductSchema], 404 : ErrorSchema})
+def ModificarRating(request, id : str, rating : int):
+	try:
+		resultado = models.ModificarRating(id, rating)
+		return 202, list(resultado)
+	except Exception as e:
+		logger.error(e)
+		return 404, {"message": "No se ha encontrado el producto"}
+	
+# @api.post("/token", auth=None) 
+# def get_token(request, username: str = Form(...), password: str = Form(...)):
+#     if username == "admin" and password == "DAI2324":
+#         return {"token": "DAI2023"}
