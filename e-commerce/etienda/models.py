@@ -1,6 +1,6 @@
 from django.db import models
 from pymongo import MongoClient
-from pydantic import BaseModel, FilePath #field_validator
+from pydantic import BaseModel, Field, FilePath #field_validator
 from typing import Any
 from bson.objectid import ObjectId
 from bson.json_util import dumps
@@ -11,6 +11,9 @@ logger = logging.getLogger(__name__)
 # Quitamos el field_validator porque no funciona con el ninja
 
 # Create your models here.
+class Rating(BaseModel):
+	rate: float = Field(ge=0., lt=5.)
+	count: int = Field(ge=1)
 class Producto(BaseModel):
 	id: Any
 	title: str
@@ -52,10 +55,18 @@ def ObtenerProductosId(id):
 
 def ObtenerProductosConcretos(query):
     resultado = productos_collection.find({"$or": [{"title": {"$regex": query, "$options": "i"}}, {"description": {"$regex": query, "$options": "i"}}]})
+    resultado = list(resultado)
+    for r in resultado:
+        r["id"] = str(r.get("_id"))
+        del r["_id"]
     return resultado
 
 def ObtenerProductosCategoria(categoria):
     resultado = productos_collection.find({"category": categoria})
+    resultado = list(resultado)
+    for r in resultado:
+        r["id"] = str(r.get("_id"))
+        del r["_id"]
     return resultado
 
 def EliminarProducto(id):
@@ -78,14 +89,29 @@ def EliminarProducto(id):
 def ModificarProducto(id, atributo, valor):
     try:
         productos_collection.update_one({"_id": ObjectId(id)}, {"$set": {atributo: valor}})
+        return True
     except Exception as e:
         logger.error(e)
         logger.error("Error al modificar el producto")        
         return False
     
-def CrearProducto(producto):
+def handle_uploaded_file(f):
+    directorio_destino = "static/imagenes/" 
+    directorio_imagenes = "imagenes/"
+    nombre_archivo = f.name.split('/')[-1]
+    nombre_archivo_destino = directorio_imagenes+nombre_archivo
+    ruta_archivo_destino = directorio_destino+nombre_archivo
+    with open(ruta_archivo_destino,"wb") as archivo:
+        archivo.write(f.read())
+    with open(nombre_archivo_destino,"wb") as archivo:
+        archivo.write(f.read())
+    return nombre_archivo_destino
+    
+def CrearProducto(title, price, description, category, image):
     try:
-        insertado = productos_collection.insert_one(producto.dict())
+        image = handle_uploaded_file(image)
+        producto = {"title": title, "price": price, "description": description, "category": category, "image": image, "rating": {"count": 0, "rate": 0}}
+        insertado = productos_collection.insert_one(producto)
         resultado = productos_collection.find({"_id": insertado.inserted_id})
         resultado = list(resultado)
         for r in resultado:
@@ -111,6 +137,20 @@ def AñadirProducto(producto):
     except Exception as e:
         print(e)
         print("Error al añadir el producto")
+        return False
+
+def ModificarRating(id, rate):
+    try:
+        product = productos_collection.find_one({"_id": ObjectId(id)})
+        if product:
+            new_rating = Rating(**product["rating"])
+            new_count = new_rating.count + 1
+            new_rate = ((new_rating.rate * new_rating.count) + (rate * 1.0)) / new_count
+            productos_collection.update_one({"_id": ObjectId(id)}, {"$set": {"rating": {"count": new_count, "rate": new_rate}}})
+            return ObtenerProductosId(id)
+    except Exception as e:
+        logger.error(e)
+        logger.error("Error al modificar el rating")        
         return False
 
 #######################################################################################
