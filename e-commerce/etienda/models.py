@@ -55,10 +55,18 @@ def ObtenerProductosId(id):
 
 def ObtenerProductosConcretos(query):
     resultado = productos_collection.find({"$or": [{"title": {"$regex": query, "$options": "i"}}, {"description": {"$regex": query, "$options": "i"}}]})
+    resultado = list(resultado)
+    for r in resultado:
+        r["id"] = str(r.get("_id"))
+        del r["_id"]
     return resultado
 
 def ObtenerProductosCategoria(categoria):
     resultado = productos_collection.find({"category": categoria})
+    resultado = list(resultado)
+    for r in resultado:
+        r["id"] = str(r.get("_id"))
+        del r["_id"]
     return resultado
 
 def EliminarProducto(id):
