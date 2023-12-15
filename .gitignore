@@ -6,3 +6,7 @@ data/
 *.pyc
 *.sqlite3
 *.log
+
+node_modules
+
+package*
