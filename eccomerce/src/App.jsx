@@ -5,8 +5,7 @@ import './App.css'
 import Menu from './components/Menu.jsx'
 import Resultados from './components/Resultados.jsx'
 import { useEffect } from 'react'; // Add missing import statement
-
-
+import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 
 function App() {
   const [productos, setProductos] = useState([])

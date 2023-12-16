@@ -4,6 +4,7 @@ import CardGroup from 'react-bootstrap/CardGroup';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
+import { Rating } from 'primereact/rating';
 
 export default function Resultados({ productos }) {
   return (
@@ -11,14 +12,20 @@ export default function Resultados({ productos }) {
       {productos.map((producto) => (
         <Col key={producto.id}>
           <Card>
-          <Card.Img variant="top" src={`../../../e-commerce/${producto.image}`} />
+          <Card.Img variant="top" src={`../../public/${producto.image}`} />
             <Card.Body>
               <Card.Title>{producto.title}</Card.Title>
               <Card.Text>{producto.description}</Card.Text>
             </Card.Body>
+            <div className="d-flex justify-content-center align-items-center">
+              <Rating value={producto.rating.rate} readOnly cancel={false} />
+            </div>
+            <div className="d-flex justify-content-center align-items-center">
+              <p></p>
+            </div>
             <Card.Footer className="d-flex justify-content-between align-items-center">
               <Button variant="primary">Comprar</Button>
-              <p className="m-0">{producto.price}</p>
+              <p className="m-0">{producto.price} €</p>
             </Card.Footer>
           </Card>
         </Col>

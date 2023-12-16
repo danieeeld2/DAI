@@ -47,3 +47,9 @@ cd <nombre de directorio que hayas escogido al ejecutar el comando anterior>
 npm install
 npm run dev
 ```
+
+Para las estrellas:
+
+```bash
+npm install primereact
+```
