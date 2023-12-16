@@ -8,3 +8,5 @@ typing-extensions==4.8
 django==4.2
 django-bootstrap5
 django-telegram-logging
+django-ninja-extra==0.19.8
+django-cors-headers==4.3.1
