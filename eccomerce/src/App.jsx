@@ -10,10 +10,11 @@ import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 function App() {
   const [productos, setProductos] = useState([])
   const [productosF, setProductosF] = useState([])
+  const [categorias, setCategorias] = useState([]); 
 
   const cambiado = (evento) => {
     if (evento.target.value !== "") {
-      const filteredProductos = productos.filter((producto) => producto.category.includes(evento.target.value))
+      const filteredProductos = productos.filter((producto) => producto.title.includes(evento.target.value))
       setProductosF(filteredProductos)
     } else {
       setProductosF(productos)
@@ -27,13 +28,15 @@ function App() {
       .then((response) => response.json())
       .then((prods) => {
         setProductos(prods)
+        const uniqueCategorias = Array.from(new Set(prods.map((producto) => producto.category)));
+        setCategorias(uniqueCategorias);
         setProductosF(prods)
       });
   }, [])
 
   return (
     <>
-      <Menu cambiado={cambiado}/>
+      <Menu cambiado={cambiado} categorias={categorias}/>
       <Resultados productos={productosF}/>
     </>
   )
