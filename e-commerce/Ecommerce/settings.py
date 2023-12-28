@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_telegram_logging',
     'etienda',
     'ninja_extra',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'Ecommerce.urls'
@@ -196,3 +198,7 @@ LOGGING = {
 
 LOGIN_REDIRECT_URL = "/etienda"
 LOGOUT_REDIRECT_URL = "/etienda"
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+]

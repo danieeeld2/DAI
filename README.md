@@ -34,3 +34,22 @@ Para crear la aplicación hacemos:
 ```bash
 docker compose run app python manage.py startapp etienda
 ```
+
+### Vite con ReactBootstrap
+
+Primero tenemos que tener instalados `nodejs 18` o superior y `npm`:
+
+```bash
+npm install react-bootstrap bootstrap
+npm create-vite@latest
+
+cd <nombre de directorio que hayas escogido al ejecutar el comando anterior>
+npm install
+npm run dev
+```
+
+Para las estrellas:
+
+```bash
+npm install primereact
+```
