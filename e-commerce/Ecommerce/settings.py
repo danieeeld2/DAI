@@ -127,6 +127,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
+    "static"
 ]
 
 # Default primary key field type
@@ -201,4 +202,5 @@ LOGOUT_REDIRECT_URL = "/etienda"
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
+    'http://localhost',
 ]

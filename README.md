@@ -53,3 +53,29 @@ Para las estrellas:
 ```bash
 npm install primereact
 ```
+
+### Despliegue
+
+- Crear carpeta nginx y documentarlo con la configuración y el dockerfile (como está)
+- Crear y añadir nginx docker-compose-prod
+
+```bash
+docker compose -f ./docker-compose-prod.yml build
+docker compose -f ./docker-compose-prod.yml up
+docker compose -f ./docker-compose-prod.yml down
+```
+
+- Cambiar las busquedas en react y la configuración para que se ejecuten los extras (en dist no se crea la carpeta public, directamente la de imagenes - a tener en cuenta en resultados.jsx)
+
+```bash
+npm run build
+```
+
+- Pasar las imagenes a static
+- Ejecutar docker compose y ya tenemos todo
+
+```bash
+localhost/etienda
+localhost/react
+```
+
