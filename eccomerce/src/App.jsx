@@ -23,8 +23,19 @@ function App() {
     console.log(evento.target.value)
   }
 
+  const cambiadoCat = (evento) => {
+    if (evento.target.value !== "") {
+      const filteredProductos = productos.filter((producto) => producto.category.includes(evento.target.value))
+      setProductosF(filteredProductos)
+    } else {
+      setProductosF(productos)
+    }
+
+    console.log(evento.target.value)
+  }
+
   useEffect(() => {
-    fetch("http://localhost:8000/api/products?since=0&to=100")
+    fetch("http://localhost/api/products?since=0&to=100")
       .then((response) => response.json())
       .then((prods) => {
         setProductos(prods)
@@ -36,7 +47,7 @@ function App() {
 
   return (
     <>
-      <Menu cambiado={cambiado} categorias={categorias}/>
+      <Menu cambiado={cambiado} categorias={categorias} cambiadoCat={cambiadoCat}/>
       <Resultados productos={productosF}/>
     </>
   )

@@ -8,7 +8,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 
 
-export default function Menu({ cambiado, categorias }) {
+export default function Menu({ cambiado, categorias, cambiadoCat }) {
   return (
     <Navbar expand="lg" className="bg-body-tertiary" fixed="top">
       <Container fluid>
@@ -19,7 +19,7 @@ export default function Menu({ cambiado, categorias }) {
             <Form.Select
               className="me-2"
               aria-label="Categorías"
-              onChange={(evento) => cambiado(evento)}
+              onChange={(evento) => cambiadoCat(evento)}
             >
               <option value="">Categories</option>
               {categorias.map((categoria, index) => (
